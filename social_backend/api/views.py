@@ -14,29 +14,40 @@ class UsersListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-class UserDetailView(generics.RetrieveAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
 class HabitListView(generics.ListAPIView):
     queryset = Habit.objects.all()
     serializer_class = HabitSerializer
 
 @api_view(['GET', 'POST'])
-def habitProgress(request, pk, habit_name):
+def userHabits(request, username):
     """
     List all code snippets, or create a new snippet.
     """
     if request.method == 'GET':
-        user = User.objects.get(pk=pk)
+        user = User.objects.get(username=username)
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        user = User.objects.get(username=username)
+        habit = Habit(habit_name=request.GET['habit_name'], user=user)
+        habit.save()
+        return Response(status=status.HTTP_201_CREATED)
+
+@api_view(['GET', 'POST'])
+def habitProgress(request, username, habit_name):
+    """
+    List all code snippets, or create a new snippet.
+    """
+    if request.method == 'GET':
+        user = User.objects.get(username=username)
         habit = user.habits.get_queryset().get(habit_name=habit_name)
         serializer = HabitSerializer(habit)
         return Response(serializer.data)
 
     elif request.method == 'POST':
-        user = User.objects.get(pk=pk)
+        user = User.objects.get(username=username)
         habit = user.habits.get_queryset().get(habit_name=habit_name)
-        print(request.GET)
         progress = Progress(units_value=request.GET['units_value'], habit=habit)
         progress.save()
         return Response(progress.pub_date, status=status.HTTP_201_CREATED)
