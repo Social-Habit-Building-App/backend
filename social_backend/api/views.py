@@ -30,7 +30,7 @@ def userHabits(request, username):
 
     elif request.method == 'POST':
         user = User.objects.get(username=username)
-        habit = Habit(habit_name=request.GET['habit_name'], user=user)
+        habit = Habit(habit_name=request.data['habit_name'], user=user)
         habit.save()
         return Response(status=status.HTTP_201_CREATED)
 
@@ -48,6 +48,6 @@ def habitProgress(request, username, habit_name):
     elif request.method == 'POST':
         user = User.objects.get(username=username)
         habit = user.habits.get_queryset().get(habit_name=habit_name)
-        progress = Progress(units_value=request.GET['units_value'], habit=habit)
+        progress = Progress(units_value=request.data['units_value'], habit=habit)
         progress.save()
         return Response(progress.pub_date, status=status.HTTP_201_CREATED)
