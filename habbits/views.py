@@ -1,14 +1,14 @@
 from rest_framework.generics import (
     ListCreateAPIView, RetrieveUpdateDestroyAPIView,)
 from rest_framework.permissions import IsAuthenticated
-from .models import habbit
+from .models import Habbit
 from .permissions import IsOwnerProfileOrReadOnly
-from .serializers import habbitSerializer, HabbitUpdateSerializer
+from .serializers import HabbitSerializer, HabbitUpdateSerializer
 
 
 class HabbitListCreateView(ListCreateAPIView):
-    queryset = habbit.objects.all()
-    serializer_class = habbitSerializer
+    queryset = Habbit.objects.all()
+    serializer_class = HabbitSerializer
     permission_class = [IsAuthenticated]
 
     def perform_create(self, serializer):
@@ -17,6 +17,6 @@ class HabbitListCreateView(ListCreateAPIView):
 
 
 class HabbitDetailView(RetrieveUpdateDestroyAPIView):
-    queryset = habbit.objects.all()
+    queryset = Habbit.objects.all()
     serializer_class = HabbitUpdateSerializer
     permission_class = [IsAuthenticated]

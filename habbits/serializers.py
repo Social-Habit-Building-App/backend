@@ -1,17 +1,17 @@
 from rest_framework import serializers
-from .models import habbit
+from .models import Habbit
 
 
-class habbitSerializer(serializers.ModelSerializer):
+class HabbitSerializer(serializers.ModelSerializer):
     habbit = serializers.StringRelatedField(read_only=True)
 
     class Meta:
-        model = habbit
+        model = Habbit
         fields = "__all__"
 
 class HabbitUpdateSerializer(serializers.ModelSerializer):
     habbit = serializers.StringRelatedField(read_only=True)
 
     class Meta:
-        model = habbit
+        model = Habbit
         exclude = ('user', )
