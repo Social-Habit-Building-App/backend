@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
+from accounts.models import userProfile
 from tracker.models import Habit, Progress
 
 class ProgressSerializer(serializers.ModelSerializer):
@@ -16,5 +16,5 @@ class HabitSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     habits = HabitSerializer(many=True)
     class Meta:
-        model = User
-        fields = ['username', 'habits']
+        model = userProfile
+        fields = ['user.username', 'habits']

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.contrib.auth.models import User
+from accounts.models import userProfile
 
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -11,7 +11,7 @@ from .serializers import UserSerializer, HabitSerializer
 from tracker.models import Habit, Progress  
 
 class UsersListView(generics.ListAPIView):
-    queryset = User.objects.all()
+    queryset = userProfile.objects.all()
     serializer_class = UserSerializer
 
 class HabitListView(generics.ListAPIView):
@@ -19,34 +19,34 @@ class HabitListView(generics.ListAPIView):
     serializer_class = HabitSerializer
 
 @api_view(['GET', 'POST'])
-def userHabits(request, username):
+def userHabits(request, pk):
     """
     List all code snippets, or create a new snippet.
     """
     if request.method == 'GET':
-        user = User.objects.get(username=username)
+        user = userProfile.objects.get(pk=pk)
         serializer = UserSerializer(user)
         return Response(serializer.data)
 
     elif request.method == 'POST':
-        user = User.objects.get(username=username)
+        user = userProfile.objects.get(pk=pk)
         habit = Habit(habit_name=request.data['habit_name'], user=user)
         habit.save()
         return Response(status=status.HTTP_201_CREATED)
 
 @api_view(['GET', 'POST'])
-def habitProgress(request, username, habit_name):
+def habitProgress(request, pk, habit_name):
     """
     List all code snippets, or create a new snippet.
     """
     if request.method == 'GET':
-        user = User.objects.get(username=username)
+        user = userProfile.objects.get(pk=pk)
         habit = user.habits.get_queryset().get(habit_name=habit_name)
         serializer = HabitSerializer(habit)
         return Response(serializer.data)
 
     elif request.method == 'POST':
-        user = User.objects.get(username=username)
+        user = userProfile.objects.get(pk=pk)
         habit = user.habits.get_queryset().get(habit_name=habit_name)
         progress = Progress(units_value=request.data['units_value'], habit=habit)
         progress.save()
