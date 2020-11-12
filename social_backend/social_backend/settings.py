@@ -56,12 +56,6 @@ INSTALLED_APPS = [
     'tracker',
 ]
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',  # <-- And here
-    ],
-}
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -98,10 +92,10 @@ WSGI_APPLICATION = 'social_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'backend',
         'USER': 'backenduser',
-        'PASSWORD': 'password',
+        'PASSWORD': 'user',
         'HOST': 'localhost',
         'PORT': '',
     }
