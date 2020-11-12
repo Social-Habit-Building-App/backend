@@ -27,5 +27,8 @@ urlpatterns = [
     path("api/accounts/", include("accounts.urls")),
 
     # habits tracker
-    path('tracker/', include('tracker.urls'))
+    path('tracker/', include('tracker.urls')),
+
+    # habbits
+    path('api/habbits/', include("habbits.urls")),
 ]
